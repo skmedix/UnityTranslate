@@ -7,7 +7,11 @@ import net.minecraft.client.gui.components.*
 import net.minecraft.client.gui.screens.Screen
 import net.minecraft.network.chat.CommonComponents
 import net.minecraft.network.chat.Component
+//#if MC >= 1.21.4
+//$$ import net.minecraft.util.ARGB
+//#else
 import net.minecraft.util.FastColor
+//#endif
 import net.minecraft.util.Mth
 import xyz.bluspring.unitytranslate.UnityTranslate
 import xyz.bluspring.unitytranslate.client.UnityTranslateClient
@@ -70,7 +74,11 @@ class UTConfigScreen(private val parent: Screen?) : Screen(Component.literal("Un
 
         super.render(guiGraphics, mouseX, mouseY, partialTick)
 
+        //#if MC >= 1.21.4
+        //$$ guiGraphics.fill(0, 50, this.width, this.height - 50, ARGB.color(150, 0, 0, 0))
+        //#else
         guiGraphics.fill(0, 50, this.width, this.height - 50, FastColor.ARGB32.color(150, 0, 0, 0))
+        //#endif
         guiGraphics.drawCenteredString(this.font, this.title, this.width / 2, 20, 16777215)
 
         UnityTranslateClient.renderCreditText(guiGraphics)
@@ -534,7 +542,11 @@ class UTConfigScreen(private val parent: Screen?) : Screen(Component.literal("Un
             this.renderBackground(guiGraphics)
             //#endif
 
+            //#if MC >= 1.21.4
+            //$$ guiGraphics.fill(0, 50, this.width, this.height - 50, ARGB.color(150, 0, 0, 0))
+            //#else
             guiGraphics.fill(0, 50, this.width, this.height - 50, FastColor.ARGB32.color(150, 0, 0, 0))
+            //#endif
             guiGraphics.drawCenteredString(this.font, this.title, this.width / 2, 20, 16777215)
 
             guiGraphics.enableScissor(0, 50, this.width, this.height - 50)

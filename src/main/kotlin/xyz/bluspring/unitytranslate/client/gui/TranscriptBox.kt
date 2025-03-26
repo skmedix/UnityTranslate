@@ -1,12 +1,19 @@
 package xyz.bluspring.unitytranslate.client.gui
 
+//#if MC >= 1.20.6
+//$$ import net.minecraft.client.renderer.RenderType
+//#endif
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.Transient
 import net.minecraft.ChatFormatting
 import net.minecraft.client.Minecraft
 import net.minecraft.client.gui.GuiGraphics
 import net.minecraft.network.chat.Component
+//#if MC >= 1.21.4
+//$$ import net.minecraft.util.ARGB
+//#else
 import net.minecraft.util.FastColor
+//#endif
 import net.minecraft.util.Mth
 import net.minecraft.world.entity.player.Player
 import xyz.bluspring.unitytranslate.Language
@@ -74,12 +81,20 @@ data class TranscriptBox(
         guiGraphics.pose().translate(0.0, 0.0, -255.0)
         guiGraphics.enableScissor(x, y, x + width, y + height)
 
+        //#if MC >= 1.21.4
+        //$$ guiGraphics.fill(x, y, x + width, y + height, ARGB.color(opacity, 0, 0, 0))
+        //#else
         guiGraphics.fill(x, y, x + width, y + height, FastColor.ARGB32.color(opacity, 0, 0, 0))
+        //#endif
         guiGraphics.drawCenteredString(Minecraft.getInstance().font, Component.translatable("unitytranslate.transcript").append(" (${language.code.uppercase()})")
             .withStyle(ChatFormatting.UNDERLINE, ChatFormatting.BOLD), x + (width / 2), y + 5, 16777215)
 
         if (!UnityTranslateClient.shouldTranscribe) {
+            //#if MC >= 1.21.4
+            //$$ guiGraphics.blit(RenderType::guiTextured, TRANSCRIPT_MUTED, x + width - 20, y + 2, 0f, 0f, 16, 16, 16, 16)
+            //#else
             guiGraphics.blit(TRANSCRIPT_MUTED, x + width - 20, y + 2, 0f, 0f, 16, 16, 16, 16)
+            //#endif
         }
 
         guiGraphics.enableScissor(x, y + 15, x + width, y + height)
@@ -119,8 +134,10 @@ data class TranscriptBox(
                 val fadeEnd = fadeStart + fadeTime
                 val fadeAmount = ((fadeEnd - currentTime).toFloat() / fadeTime.toFloat())
 
+                //#if MC < 1.21.4
                 val alpha = Mth.clamp(fadeAmount, 0f, 1f)
                 guiGraphics.setColor(1f, 1f, 1f, alpha)
+                //#endif
             }
 
             val split = font.split(component, ((width - 5) * invScale).toInt()).reversed()
@@ -134,7 +151,9 @@ data class TranscriptBox(
                 guiGraphics.pose().popPose()
             }
 
+            //#if MC < 1.21.4
             guiGraphics.setColor(1f, 1f, 1f, 1f)
+            //#endif
 
             currentY -= 4
         }
@@ -142,7 +161,11 @@ data class TranscriptBox(
         guiGraphics.disableScissor()
         guiGraphics.disableScissor()
 
+        //#if MC >= 1.21.1
+        //$$ guiGraphics.renderOutline(x, y, width, height, ARGB.color(100, 0, 0, 0))
+        //#else
         guiGraphics.renderOutline(x, y, width, height, FastColor.ARGB32.color(100, 0, 0, 0))
+        //#endif
 
         guiGraphics.pose().popPose()
     }

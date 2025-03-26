@@ -1,5 +1,8 @@
 package xyz.bluspring.unitytranslate.client.gui
 
+//#if MC >= 1.20.6
+//$$ import net.minecraft.client.renderer.RenderType
+//#endif
 import net.minecraft.Util
 import net.minecraft.client.Minecraft
 import net.minecraft.client.gui.GuiGraphics
@@ -124,9 +127,15 @@ class LanguageSelectScreen(val parent: Screen?, val isAddingBox: Boolean) : Scre
                         if (!type.enabled)
                             continue
 
+                        //#if MC >= 1.21.4
+                        //$$ guiGraphics.blit(RenderType::guiTextured, UnityTranslate.id("textures/gui/transcriber/${type.name.lowercase()}.png"),
+                        //$$    x, top - 1, 0f, 0f, 16, 16, 16, 16
+                        //$$)
+                        //#else
                         guiGraphics.blit(UnityTranslate.id("textures/gui/transcriber/${type.name.lowercase()}.png"),
                             x, top - 1, 0f, 0f, 16, 16, 16, 16
                         )
+                        //#endif
 
                         if (mouseX >= x && mouseX <= x + 16 && mouseY >= top - 1 && mouseY <= top - 1 + 16) {
                             val lines = mutableListOf<FormattedCharSequence>()

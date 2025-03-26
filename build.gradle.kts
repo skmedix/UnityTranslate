@@ -75,6 +75,7 @@ val architecturyVersion = when (mcData.version.rawVersion) {
     1_20_04 -> "11.1.17"
     1_20_06 -> "12.1.4"
     1_21_01 -> "13.0.6"
+    1_21_04 -> "15.0.1"
 
     else -> throw IllegalStateException()
 }
@@ -82,7 +83,7 @@ val architecturyVersion = when (mcData.version.rawVersion) {
 val lwjglVersion = when (mcData.version.rawVersion) {
     1_20_01 -> "3.3.1"
     1_20_04 -> "3.3.2"
-    1_20_06, 1_21_01 -> "3.3.3"
+    1_20_06, 1_21_01, 1_21_04 -> "3.3.3"
 
     else -> throw IllegalStateException()
 }
@@ -100,6 +101,7 @@ dependencies {
             1_20_04 -> "9.2.0"
             1_20_06 -> "10.0.0"
             1_21_01 -> "11.0.2"
+            1_21_04 -> "13.0.3"
 
             else -> throw IllegalStateException()
         }
@@ -114,7 +116,7 @@ dependencies {
     val useSVC = true
 
     if (useSVC)
-        modRuntimeOnly("maven.modrinth:simple-voice-chat:${mcData.loader.friendlyString}-${if (mcData.version != MinecraftVersion.VERSION_1_21_1) mcData.version else "1.21"}-${project.property("voicechat_version")}")
+        modRuntimeOnly("maven.modrinth:simple-voice-chat:${mcData.loader.friendlyString}-${if (mcData.version != MinecraftVersion.VERSION_1_21_1) mcData.version else "1.21.1"}-${if (mcData.version == MinecraftVersion.VERSION_1_21_4) "2.5.28" else project.property("voicechat_version")}")
     else if (!mcData.isNeoForge) {
         modRuntimeOnly("maven.modrinth:plasmo-voice:${mcData.loader.friendlyString}-${if (mcData.version != MinecraftVersion.VERSION_1_21_1) mcData.version else "1.21"}-${project.property("plasmo_version")}")
         runtimeOnly("su.plo.voice.api:server:${project.property("plasmo_api_version")}")
@@ -126,16 +128,17 @@ dependencies {
         1_20_04 -> "13.0.121"
         1_20_06 -> "14.0.126"
         1_21_01 -> "15.0.128"
+        1_21_04 -> "17.0.144"
 
         else -> throw IllegalStateException()
     }
 
     modCompileOnly("maven.modrinth:cloth-config:${clothConfigVersion}+${mcData.loader.friendlyString}")
 
-    val cerbonsApiVersion = if (mcData.isForgeLike) "XWZQbKsr" else "1.1.0"
-    modCompileOnly("maven.modrinth:cerbons-api:$cerbonsApiVersion")
+//    val cerbonsApiVersion = if (mcData.isForgeLike) "XWZQbKsr" else "1.1.0"
+//    modCompileOnly("maven.modrinth:cerbons-api:$cerbonsApiVersion")
 
-    val talkBalloonsVersion = if (mcData.isForgeLike) "kN8kdQ22" else "1.0.0"
+    val talkBalloonsVersion = if (mcData.isForgeLike) "r8pMSPGi" else "Ez5NGTUT"
     modCompileOnly("maven.modrinth:talk-balloons:$talkBalloonsVersion")
 
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-core-jvm:${project.property("kotlin_serialization_version")}")
